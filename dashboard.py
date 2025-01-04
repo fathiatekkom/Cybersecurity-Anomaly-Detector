@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import torch
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from visualize import Autoencoder, plot_features
 from evaluate import save_visualizations
@@ -116,6 +117,25 @@ elif evaluation_mode == "Supervised":
         # Classification report
         st.write("Classification Report:")
         st.text(classification_report(labels, predictions))
+
+        # Calculate confusion matrix
+        tn, fp, fn, tp = confusion_matrix(labels, predictions).ravel()
+
+        # Display confusion matrix metrics
+        st.write("Confusion Matrix Metrics:")
+        st.write(f"True Positives (TP): {tp}")
+        st.write(f"True Negatives (TN): {tn}")
+        st.write(f"False Positives (FP): {fp}")
+        st.write(f"False Negatives (FN): {fn}")
+
+        # Add bar chart visualization for metrics
+        metrics_data = {
+            "Metric": ["True Positives (TP)", "True Negatives (TN)", "False Positives (FP)", "False Negatives (FN)"],
+            "Count": [tp, tn, fp, fn]
+        }
+        metrics_df = pd.DataFrame(metrics_data)
+        st.write("Confusion Matrix Metrics (Bar Chart):")
+        st.bar_chart(metrics_df.set_index("Metric"))
 
         # Add predictions to DataFrame
         test_df['Predictions'] = predictions

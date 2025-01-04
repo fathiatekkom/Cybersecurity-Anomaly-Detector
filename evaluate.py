@@ -102,6 +102,14 @@ def evaluate_supervised(features, labels, model):
 
     predictions = (reconstruction_error > anomaly_threshold).astype(int)
 
+    # Calculate confusion matrix
+    tn, fp, fn, tp = confusion_matrix(labels, predictions).ravel()
+
+    print(f"True Positives (TP): {tp}")
+    print(f"True Negatives (TN): {tn}")
+    print(f"False Positives (FP): {fp}")
+    print(f"False Negatives (FN): {fn}")
+
     # Print and save classification report
     print("Classification Report:")
     print(classification_report(labels, predictions))
